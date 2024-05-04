@@ -89,8 +89,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("JLD" + envVar + "\n")
-
 	variableX, err := GetEnvVar("HEROKU_SECRETS_CONFIG")
 	if err != nil {
 		fmt.Println(err)
