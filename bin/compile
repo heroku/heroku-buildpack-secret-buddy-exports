@@ -21,11 +21,8 @@ export_env_dir() {
   denylist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
   if [ -d "$env_dir" ]; then
     for e in $(ls $env_dir); do
-      echo "JLD $e"
-      echo "JLD $(<$env_dir/$e)"
       if [ $e = "SECRETBUDDY_ENV" ]; then
-        # echo "JLD found $e"
-        # echo "JLD $(cat $env_dir/$e)"
+      ls -all $env_dir/$e
         mysecretbuddyenv=$(<$env_dir/$e)
       fi    
       echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex" &&
@@ -68,7 +65,9 @@ echo "-----> Listing the mysecretbuddyenv"
 echo $mysecretbuddyenv
 
 echo "-----> Exporting all the secrets from mysecretbuddyenv"
-echo $mysecretbuddyenv | jq -r '.current | to_entries[] | "export \(.key)=\(.value)"' > $BUILDPACK_DIR/export
+#echo $mysecretbuddyenv | jq -r '.current | to_entries[] | "export \(.key)=\(.value)"' > $BUILDPACK_DIR/export
+echo $mysecretbuddyenv
+echo "export SIDEKIQ_PASSWORD='pepeexport'" >> $BUILDPACK_DIR/export
 
 echo "-----> Listing the export file info:"
 ls -all $BUILDPACK_DIR/export
