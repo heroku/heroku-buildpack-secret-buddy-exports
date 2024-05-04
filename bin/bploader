@@ -15,3 +15,9 @@ ENV_DIR=$3
 BPLOADER_DIR=$(dirname "${0:-}")
 echo "JLD: BPLOADER_DIR: $BPLOADER_DIR"
 
+BUILDPACK=$BPLOADER_DIR/../secret-buddy-buildpack
+
+echo "JLD: BUILDPACK: $BUILDPACK"
+
+($BUILDPACK)
+
