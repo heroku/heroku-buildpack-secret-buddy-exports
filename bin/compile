@@ -32,7 +32,8 @@ export_env_dir() {
   fi
 }
 
-
+echo "JLD before"
+env
 export_env_dir $ENV_DIR
 # SECRETBUDDY_ENV here is obfuscated (******) because we are using WriteOnlyConfigVar
 SECRETBUDDY="$SECRETBUDDY_ENV"
@@ -40,6 +41,10 @@ if [ -z "$SECRETBUDDY" ]; then
   echo "No secrets found"
   exit 0
 fi
+echo "JLD after"
+env
+
+echo "JLD SECRETBUDDY: $SECRETBUDDY"
 
 BUILDPACK=$BUILDPACK_DIR/secret-buddy-buildpack
 
