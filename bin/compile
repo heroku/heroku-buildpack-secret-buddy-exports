@@ -22,7 +22,7 @@ export_env_dir() {
   if [ -d "$env_dir" ]; then
     for e in $(ls $env_dir); do
       if [ $e = "SECRETBUDDY_ENV" ]; then
-      ls -all $env_dir/$e
+        ls -all $env_dir/$e
         mysecretbuddyenv=$(<$env_dir/$e)
       fi    
       echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex" &&
@@ -66,8 +66,7 @@ echo $mysecretbuddyenv
 
 echo "-----> Exporting all the secrets from mysecretbuddyenv"
 #echo $mysecretbuddyenv | jq -r '.current | to_entries[] | "export \(.key)=\(.value)"' > $BUILDPACK_DIR/export
-echo $mysecretbuddyenv
-echo "export SIDEKIQ_PASSWORD='pepeexport'" >> $BUILDPACK_DIR/export
+echo "export SIDEKIQ_PASSWORD='pepeexport'" > $BUILDPACK_DIR/export
 
 echo "-----> Listing the export file info:"
 ls -all $BUILDPACK_DIR/export
