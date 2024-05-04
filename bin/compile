@@ -71,7 +71,5 @@ echo "export SIDEKIQ_PASSWORD='pepeexport'" > $BUILDPACK_DIR/export
 echo "-----> Listing the export file info:"
 ls -all $BUILDPACK_DIR/export
 
-# ONLY FOR LOCAL DEBUGGING
-#echo "-----> Listing the export file"
-#cat $BUILDPACK_DIR/export
-
+echo "-----> Listing the export file info:"
+source "$BUILDPACK_DIR/bin/bploader"

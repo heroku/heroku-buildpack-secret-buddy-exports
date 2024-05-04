@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# fail fast
+set -e
+
+unset GIT_DIR     # Avoid GIT_DIR leak from previous build steps
+set -o errexit    # always exit on error
+set -o pipefail   # don't ignore exit codes when piping output
+# debug
+# set -x
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+# fetch HEROKU env var
+BPLOADER_DIR=$(dirname "${0:-}")
+echo "JLD: BPLOADER_DIR: $BPLOADER_DIR"
+
