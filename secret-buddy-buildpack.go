@@ -81,6 +81,18 @@ func ParseRules(ruleString string) (map[string]string, error) {
 	return rules, err
 }
 
+// EscapeSingleQuote escapes single quote characters in a string
+func EscapeSingleQuote(s string) string {
+	var sb strings.Builder
+	for _, ch := range s {
+		if ch == '\'' {
+			sb.WriteRune('\\')
+		}
+		sb.WriteRune(ch)
+	}
+	return sb.String()
+}
+
 func main() {
 
 	envVar, err := GetEnvVar("SECRETBUDDY_ENV")
@@ -116,7 +128,7 @@ func main() {
 	for key, value := range consolidatedSecret {
 
 		env_var := os.Getenv(key)
-		filter_value := "'" + value + "'"
+		filter_value := "'" + EscapeSingleQuote(value) + "'"
 		if env_var == "" {
 			fmt.Printf("export %s=%v\n", key, filter_value)
 		}
