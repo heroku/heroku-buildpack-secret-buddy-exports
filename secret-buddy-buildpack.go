@@ -83,14 +83,11 @@ func ParseRules(ruleString string) (map[string]string, error) {
 
 // EscapeSingleQuote escapes single quote characters in a string
 func EscapeSingleQuote(s string) string {
-	var sb strings.Builder
-	for _, ch := range s {
-		if ch == '\'' {
-			sb.WriteRune('\\')
-		}
-		sb.WriteRune(ch)
-	}
-	return sb.String()
+	// Split the string by the single quote
+	parts := strings.Split(s, "'")
+	// Join the parts with the escaped single quote sequence
+	escaped := strings.Join(parts, `'\''`)
+	return escaped
 }
 
 func main() {
