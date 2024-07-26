@@ -23,6 +23,8 @@ export_env_dir() {
       if [ $e = "SECRETBUDDY_ENV" ]; then
         echo "JLD SECRETBUDDY_ENV directory:"
         ls -all $env_dir/$e
+        echo "JLD SECRETBUDDY_ENV content:"
+        cat $env_dir/$e
         mysecretbuddyenv=$(<$env_dir/$e)
       fi    
       echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex" &&
