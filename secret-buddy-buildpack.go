@@ -16,6 +16,7 @@ func ExportEnvVarsFromMap(env string, rules map[string]string) (map[string]strin
 	var consolidatedSecret ConsolidatedSecret
 	err := json.Unmarshal([]byte(env), &consolidatedSecret)
 	if err != nil {
+		fmt.Println("JLD - buildpack Error parsing env var")
 		return nil, err
 	}
 	var envVars map[string]string
@@ -97,6 +98,8 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+
+	fmt.Println("JLD - buildpack envVar: ", envVar)
 
 	variableX, err := GetEnvVar("HEROKU_SECRETS_CONFIG")
 	if err != nil {
