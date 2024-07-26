@@ -17,8 +17,11 @@ export_env_dir() {
   acceptlist_regex=${2:-''}
   denylist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
   if [ -d "$env_dir" ]; then
+    echo "JLD env_dir: $env_dir"
     for e in $(ls $env_dir); do
+      echo "JLD e: $e"
       if [ $e = "SECRETBUDDY_ENV" ]; then
+        echo "JLD SECRETBUDDY_ENV directory:"
         ls -all $env_dir/$e
         mysecretbuddyenv=$(<$env_dir/$e)
       fi    
