@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir> <env-dir>
+
 # fail fast
 set -e
+
 unset GIT_DIR     # Avoid GIT_DIR leak from previous build steps
 set -o errexit    # always exit on error
 set -o pipefail   # don't ignore exit codes when piping output
@@ -12,71 +14,42 @@ CACHE_DIR=$2
 ENV_DIR=$3
 # fetch HEROKU env var
 BUILDPACK_DIR=$(cd "$(dirname "${0:-}")"; cd ..; pwd)
+
 export_env_dir() {
   env_dir=$1
   acceptlist_regex=${2:-''}
   denylist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
   if [ -d "$env_dir" ]; then
-    echo "JLD env_dir: $env_dir"
     for e in $(ls $env_dir); do
-      echo "JLD e: $e"
-      if [ $e = "SECRETBUDDY_ENV" ]; then
-        echo "JLD SECRETBUDDY_ENV directory:"
-        ls -all $env_dir/$e
-        echo "JLD SECRETBUDDY_ENV content:"
-        cat $env_dir/$e
-        mysecretbuddyenv=$(<$env_dir/$e)
-      fi    
       echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex" &&
-      export "$e=$(<$env_dir/$e)"
+      export "$e=$(cat $env_dir/$e)"
       :
     done
   fi
 }
 
-echo "JLD before"
-env
+
 export_env_dir $ENV_DIR
-# SECRETBUDDY_ENV here is obfuscated (******) because we are using WriteOnlyConfigVar
 SECRETBUDDY="$SECRETBUDDY_ENV"
 if [ -z "$SECRETBUDDY" ]; then
   echo "No secrets found"
   exit 0
 fi
-echo "JLD after"
-env
-
-echo "JLD SECRETBUDDY: $SECRETBUDDY"
 
 BUILDPACK=$BUILDPACK_DIR/secret-buddy-buildpack
 
-echo "-----> Listing all the files in the buildpack dir:"
-ls -la $BUILDPACK_DIR
-echo "-----> Listing the buildpack info:"
-ls -all $BUILDPACK
-
+# uncomment for debugging
+#ls -la $BUILDPACK_DIR
+#ls -la $BUILDPACK
 mkdir -p "$BUILD_DIR/.profile.d"
 
-cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/secret-buddy.sh
+cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-buddy.sh
 
-cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack 
+echo "Copying buildpack exec to $BUILD_DIR/.profile.d/secret-buddy-buildpack"
+cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack
 
-echo "-----> Listing all the files in the BUILD_DIR"
-ls -la $BUILD_DIR
+#echo "BUILD_DIR: $BUILD_DIR"
+#ls -la $BUILD_DIR
 
-echo "-----> Listing all the files in the profile.d"
-ls -la $BUILD_DIR/.profile.d
-
-# DEBUG
-echo "-----> Listing the mysecretbuddyenv"
-echo $mysecretbuddyenv
-
-echo "-----> Exporting all the secrets from mysecretbuddyenv"
-#echo $mysecretbuddyenv | jq -r '.current | to_entries[] | "export \(.key)=\(.value)"' > $BUILDPACK_DIR/export
-echo "export SIDEKIQ_PASSWORD='pepeexport'" > $BUILDPACK_DIR/export
-
-echo "-----> Listing the export file info:"
-ls -all $BUILDPACK_DIR/export
-
-echo "-----> Listing the export file info:"
-source "$BUILDPACK_DIR/bin/bploader"
+#echo "BUILD_DIR/.profile.d"
+#ls -la $BUILD_DIR/.profile.d
