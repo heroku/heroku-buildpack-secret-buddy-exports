@@ -28,6 +28,7 @@ export_env_dir() {
   fi
 }
 
+echo "JLD going to export env dir"
 
 export_env_dir $ENV_DIR
 SECRETBUDDY="$SECRETBUDDY_ENV"
@@ -35,6 +36,8 @@ if [ -z "$SECRETBUDDY" ]; then
   echo "No secrets found"
   exit 0
 fi
+
+echo "JLD export completed"
 
 BUILDPACK=$BUILDPACK_DIR/secret-buddy-buildpack
 
