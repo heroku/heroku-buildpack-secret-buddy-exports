@@ -136,24 +136,24 @@ func main() {
 		}
 	}
 
-	buildpack_dir, err := GetEnvVar("BUILDPACK_DIR")
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	export_file := buildpack_dir + "/export"
-	file, err := os.OpenFile(export_file, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-	if err != nil {
-		fmt.Println("Error opening file:", err)
-		return
-	}
-	// Ensure the file is closed when the function returns
-	defer file.Close()
+	// buildpack_dir, err := GetEnvVar("BUILDPACK_DIR")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	os.Exit(1)
+	// }
+	// export_file := buildpack_dir + "/export"
+	// file, err := os.OpenFile(export_file, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	// if err != nil {
+	// 	fmt.Println("Error opening file:", err)
+	// 	return
+	// }
+	// // Ensure the file is closed when the function returns
+	// defer file.Close()
 
-	// Write the string to the file
-	_, err = file.WriteString("MY_SECRET='pepeexport'\n")
-	if err != nil {
-		fmt.Println("Error writing to file:", err)
-		return
-	}
+	// // Write the string to the file
+	// _, err = file.WriteString("MY_SECRET='pepeexport'\n")
+	// if err != nil {
+	// 	fmt.Println("Error writing to file:", err)
+	// 	return
+	// }
 }
