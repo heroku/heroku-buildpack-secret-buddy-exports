@@ -57,7 +57,7 @@ cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack
 #echo "BUILD_DIR/.profile.d"
 #ls -la $BUILD_DIR/.profile.d
 
-echo "export MY_SECRET='pepeexport'" >> $BUILDPACK_DIR/export
+# echo "export MY_SECRET='pepeexport'" >> $BUILDPACK_DIR/export
 
-echo "-----> JLD Listing the export file info:"
-ls -all $BUILDPACK_DIR/export
+# echo "-----> JLD Listing the export file info:"
+# ls -all $BUILDPACK_DIR/export
