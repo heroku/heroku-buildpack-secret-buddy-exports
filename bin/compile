@@ -28,6 +28,7 @@ export_env_dir() {
       echo "3"
       echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex" &&
       echo "export $e=$(cat $env_dir/$e)" >> $BUILDPACK_DIR/export
+      ls -all $env_dir/$e
       :
     done
   fi
@@ -66,3 +67,4 @@ cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack
 
 echo "-----> JLD Listing the export file info:"
 ls -all $BUILDPACK_DIR/export
+cat $BUILDPACK_DIR/export
