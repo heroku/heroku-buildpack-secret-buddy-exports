@@ -34,12 +34,6 @@ export_env_dir() {
   fi
 }
 
-echo "JLD going to run heroku"
-
-heroku_output = $(heroku config 2>&1)
-
-echo "JLD heroku_output: $heroku_output"
-
 echo "JLD going to export env dir"
 
 export_env_dir $ENV_DIR
