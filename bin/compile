@@ -52,9 +52,11 @@ cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack
 
 echo "Copying check-secretbuddy-envs to $BUILD_DIR/bin/check-secretbuddy-envs"
 cp $CHECK_SECRETBUDDY_ENVS_SCRIPT $BUILD_DIR/bin/check-secretbuddy-envs
+ls -la $BUILD_DIR/bin
 
 echo "Copying check-secretbuddy-envs to $BUILD_DIR/.profile.d/check-secretbuddy-envs"
 cp $CHECK_SECRETBUDDY_ENVS_SCRIPT $BUILD_DIR/.profile.d/check-secretbuddy-envs
+ls -la $BUILD_DIR/.profile.d
 
 echo "BUILD_DIR: $BUILD_DIR"
 ls -la $BUILD_DIR
