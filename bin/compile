@@ -58,6 +58,12 @@ echo "Copying check-secretbuddy-envs to $BUILD_DIR/.profile.d/check-secretbuddy-
 cp $CHECK_SECRETBUDDY_ENVS_SCRIPT $BUILD_DIR/.profile.d/check-secretbuddy-envs
 ls -la $BUILD_DIR/.profile.d
 
+echo "creating new dir"
+mkdir -p "$BUILD_DIR/sbscripts"
+cp $CHECK_SECRETBUDDY_ENVS_SCRIPT $BUILD_DIR/sbscripts/check-secretbuddy-envs
+ls -la $BUILD_DIR/sbscripts
+
+
 echo "BUILD_DIR: $BUILD_DIR"
 ls -la $BUILD_DIR
 
