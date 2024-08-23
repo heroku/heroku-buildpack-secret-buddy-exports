@@ -14,42 +14,34 @@ CACHE_DIR=$2
 ENV_DIR=$3
 # fetch HEROKU env var
 BUILDPACK_DIR=$(cd "$(dirname "${0:-}")"; cd ..; pwd)
-
-echo "export PEPE=PEPE" > $BUILDPACK_DIR/export
+echo "BUILDPACK_DIR: $BUILDPACK_DIR"
 
 export_env_dir() {
-  echo "1"
   env_dir=$1
   acceptlist_regex=${2:-''}
   denylist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
   if [ -d "$env_dir" ]; then
-    echo "2"
     for e in $(ls $env_dir); do
-      echo "3"
       echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex" &&
-      echo "export $e=$(cat $env_dir/$e)" >> $BUILDPACK_DIR/export
-      ls -all $env_dir/$e
+      export "$e=$(cat $env_dir/$e)"
       :
     done
   fi
 }
 
-echo "JLD going to export env dir"
 
 export_env_dir $ENV_DIR
-# SECRETBUDDY="$SECRETBUDDY_ENV"
-# if [ -z "$SECRETBUDDY" ]; then
-#   echo "No secrets found"
-#   exit 0
-# fi
-
-echo "JLD export completed"
+SECRETBUDDY="$SECRETBUDDY_ENV"
+if [ -z "$SECRETBUDDY" ]; then
+  echo "No secrets found"
+  exit 0
+fi
 
 BUILDPACK=$BUILDPACK_DIR/secret-buddy-buildpack
 
 # uncomment for debugging
-#ls -la $BUILDPACK_DIR
-#ls -la $BUILDPACK
+ls -la $BUILDPACK_DIR
+ls -la $BUILDPACK
 mkdir -p "$BUILD_DIR/.profile.d"
 
 cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-buddy.sh
@@ -57,14 +49,8 @@ cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-budd
 echo "Copying buildpack exec to $BUILD_DIR/.profile.d/secret-buddy-buildpack"
 cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack
 
-#echo "BUILD_DIR: $BUILD_DIR"
-#ls -la $BUILD_DIR
+echo "BUILD_DIR: $BUILD_DIR"
+ls -la $BUILD_DIR
 
 #echo "BUILD_DIR/.profile.d"
 #ls -la $BUILD_DIR/.profile.d
-
-# echo "export MY_SECRET='pepeexport'" >> $BUILDPACK_DIR/export
-
-echo "-----> JLD Listing the export file info:"
-ls -all $BUILDPACK_DIR/export
-cat $BUILDPACK_DIR/export
