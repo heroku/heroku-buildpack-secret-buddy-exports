@@ -38,6 +38,7 @@ if [ -z "$SECRETBUDDY" ]; then
 fi
 
 BUILDPACK=$BUILDPACK_DIR/secret-buddy-buildpack
+CHECK_SECRETBUDDY_ENVS_SCRIPT=$BUILDPACK_DIR/check-secretbuddy-envs
 
 # uncomment for debugging
 ls -la $BUILDPACK_DIR
@@ -48,6 +49,9 @@ cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-budd
 
 echo "Copying buildpack exec to $BUILD_DIR/.profile.d/secret-buddy-buildpack"
 cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack
+
+echo "Copying check-secretbuddy-envs to $BUILD_DIR/bin/check-secretbuddy-envs"
+cp $CHECK_SECRETBUDDY_ENVS_SCRIPT $BUILD_DIR/bin/check-secretbuddy-envs
 
 echo "BUILD_DIR: $BUILD_DIR"
 ls -la $BUILD_DIR
