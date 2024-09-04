@@ -40,8 +40,8 @@ BUILDPACK=$BUILDPACK_DIR/secret-buddy-buildpack
 CHECK_SECRETBUDDY_ENVS_SCRIPT=$BUILDPACK_DIR/check-secretbuddy
 
 # uncomment for debugging
-#ls -la $BUILDPACK_DIR
-#ls -la $BUILDPACK
+ls -la $BUILDPACK_DIR
+ls -la $BUILDPACK
 mkdir -p "$BUILD_DIR/.profile.d"
 
 cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-buddy.sh
@@ -52,7 +52,7 @@ cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack
 echo "Copying check-secretbuddy to $BUILD_DIR/bin/check-secretbuddy"
 cp $CHECK_SECRETBUDDY_ENVS_SCRIPT $BUILD_DIR/bin/check-secretbuddy
 chmod 755 $BUILD_DIR/bin/check-secretbuddy
-#ls -la $BUILD_DIR/bin
+ls -la $BUILD_DIR/bin
 
 #echo "BUILD_DIR: $BUILD_DIR"
 #ls -la $BUILD_DIR
