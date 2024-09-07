@@ -49,6 +49,9 @@ cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-budd
 echo "Copying buildpack exec to $BUILD_DIR/.profile.d/secret-buddy-buildpack"
 cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack
 
+echo "script:"
+ls -la $CHECK_SECRETBUDDY_ENVS_SCRIPT
+
 echo "Copying check-secretbuddy to $BUILD_DIR/bin/check-secretbuddy"
 cp $CHECK_SECRETBUDDY_ENVS_SCRIPT $BUILD_DIR/bin/check-secretbuddy
 chmod 755 $BUILD_DIR/bin/check-secretbuddy
