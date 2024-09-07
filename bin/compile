@@ -44,7 +44,7 @@ TARGET_BIN_DIR=$BUILD_DIR/bin
 ls -la $BUILDPACK_DIR
 ls -la $BUILDPACK
 mkdir -p "$BUILD_DIR/.profile.d"
-mkdir -p "$BUILD_DIR/bin"
+#mkdir -p "$BUILD_DIR/bin"
 
 cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-buddy.sh
 
