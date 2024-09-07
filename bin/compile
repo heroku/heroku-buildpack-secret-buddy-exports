@@ -54,7 +54,11 @@ echo "script:"
 ls -la $CHECK_SECRETBUDDY_ENVS_SCRIPT
 
 echo "dir:"
-ls -la $BUILD_DIR/bin
+if [ ! -d "$BUILD_DIR/bin" ]; then
+    echo "$BUILD_DIR/bin" is not a directory. MAKE IT"
+    mkdir "$BUILD_DIR/bin"
+fi
+#ls -la $BUILD_DIR/bin
 
 # echo "Copying check-secretbuddy to $BUILD_DIR/bin/check-secretbuddy"
 # cp $CHECK_SECRETBUDDY_ENVS_SCRIPT $BUILD_DIR/bin/check-secretbuddy
