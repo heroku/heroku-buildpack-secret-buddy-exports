@@ -50,15 +50,18 @@ echo "Copying buildpack exec to $BUILD_DIR/.profile.d/secret-buddy-buildpack"
 cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack
 
 echo "script:"
-echo -la $CHECK_SECRETBUDDY_ENVS_SCRIPT
+ls -la $CHECK_SECRETBUDDY_ENVS_SCRIPT
 
 echo "dir:"
-echo -la $BUILD_DIR/bin
+ls -la $BUILD_DIR/bin
 
 # echo "Copying check-secretbuddy to $BUILD_DIR/bin/check-secretbuddy"
 # cp $CHECK_SECRETBUDDY_ENVS_SCRIPT $BUILD_DIR/bin/check-secretbuddy
 # chmod 755 $BUILD_DIR/bin/check-secretbuddy
 # ls -la $BUILD_DIR/bin
+
+echo "cat script"
+cat $CHECK_SECRETBUDDY_ENVS_SCRIPT
 
 echo "cat"
 cat $CHECK_SECRETBUDDY_ENVS_SCRIPT > $BUILD_DIR/bin/check-secretbuddy
