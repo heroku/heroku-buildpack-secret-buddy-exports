@@ -38,6 +38,7 @@ fi
 
 BUILDPACK=$BUILDPACK_DIR/secret-buddy-buildpack
 CHECK_SECRETBUDDY_ENVS_SCRIPT=$BUILDPACK_DIR/check-secretbuddy
+TARGET_BIN_DIR=$BUILD_DIR/bin
 
 # uncomment for debugging
 ls -la $BUILDPACK_DIR
@@ -54,9 +55,9 @@ echo "script:"
 ls -la $CHECK_SECRETBUDDY_ENVS_SCRIPT
 
 echo "dir:"
-if [ ! -d "$BUILD_DIR/bin" ]; then
-    echo "$BUILD_DIR/bin" is not a directory. MAKE IT"
-    mkdir "$BUILD_DIR/bin"
+if [ ! -d "$TARGET_BIN_DIR" ]; then
+    echo  "is not a directory. MAKE IT"
+    mkdir "$TARGET_BIN_DIR"
 fi
 #ls -la $BUILD_DIR/bin
 
