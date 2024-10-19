@@ -61,3 +61,14 @@ BUILDPACK=$BUILDPACK_DIR/secret-buddy-buildpack
 mkdir -p "$BUILD_DIR/.profile.d"
 
 cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-buddy.sh
+
+echo "now checking the env vars"
+if [ -n "$FIRST_ENVVAR" ]; then
+    echo "FIRST_ENVVAR exist"
+fi
+
+if [ -n "$MY_SECRET" ]; then
+    echo "MY_SECRET exist"
+fi
+
+echo "JLD END"
