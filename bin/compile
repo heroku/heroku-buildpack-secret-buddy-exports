@@ -15,31 +15,58 @@ ENV_DIR=$3
 # fetch HEROKU env var
 BUILDPACK_DIR=$(cd "$(dirname "${0:-}")"; cd ..; pwd)
 
+echo "JLD compile started"
+if [ -n "$MIENVVAR" ]; then
+    echo "MIENVVAR exist"
+fi
+
+
 export_env_dir() {
   env_dir=$1
   acceptlist_regex=${2:-''}
   denylist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
   if [ -d "$env_dir" ]; then
     for e in $(ls $env_dir); do
-      if echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex"; then
-        export "$e=$(cat $env_dir/$e)"
-        echo "Content of $env_dir/$e:"
-        cat "$env_dir/$e"
-        if [ "$e" = "SECRETBUDDY_ENV" ]; then
-          json_content=$(cat "$env_dir/$e")
-          export_json_env_vars "$json_content"
-        fi
+      echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex" &&
+      contenido=$(cat $env_dir/$e)
+      export "$e=$contenido"    # I export even the json SECRETBUDDY_ENV because  need the to check later
+      if [ "$e" = "SECRETBUDDY_ENV" ]; then
+        echo "AAA $contenido"
+        export_json_env_vars "$contenido"
       fi
+      :
     done
   fi
 }
 
+# export_env_dir() {
+#   env_dir=$1
+#   acceptlist_regex=${2:-''}
+#   denylist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+#   if [ -d "$env_dir" ]; then
+#     for e in $(ls $env_dir); do
+#       if echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex"; then
+#         export "$e=$(cat $env_dir/$e)"
+#         echo "Content of $env_dir/$e:"
+#         cat "$env_dir/$e"
+#         if [ "$e" = "SECRETBUDDY_ENV" ]; then
+#           json_content=$(cat "$env_dir/$e")
+#           export_json_env_vars "$json_content"
+#         fi
+#       fi
+#     done
+#   fi
+# }
+
 export_json_env_vars() {
   json_content=$1
-  echo "$json_content" | jq -r '.current | to_entries | .[] | "export \(.key)=\(.value)"' | while read -r export_cmd; do
-    eval "$export_cmd"
+  echo "$json_content" | jq -r '.current | to_entries | .[] | "\(.key)=\(.value)"' | while read -r export_cmd; do
+    #export "$export_cmd"
+    export PEPE=123
     echo "Exported: $export_cmd"
+  export PEPE=123
   done
+  ls
 }
 
 echo "JLD going to export env dir"
@@ -63,12 +90,16 @@ mkdir -p "$BUILD_DIR/.profile.d"
 cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-buddy.sh
 
 echo "now checking the env vars"
-if [ -n "$FIRST_ENVVAR" ]; then
-    echo "FIRST_ENVVAR exist"
-fi
-
 if [ -n "$MY_SECRET" ]; then
     echo "MY_SECRET exist"
+fi
+
+if [ -n "$MIENVVAR" ]; then
+    echo "MIENVVAR exist"
+fi
+
+if [ -n "$PEPE" ]; then
+    echo "PEPE exist"
 fi
 
 echo "JLD END"
