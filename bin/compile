@@ -23,6 +23,7 @@ export_env_dir() {
   if [ -d "$env_dir" ]; then
     for e in $(ls $env_dir); do
       echo "$e" | grep -E "$acceptlist_regex" | grep -qvE "$denylist_regex" &&
+      echo "exporting $e"
       contenido=$(cat $env_dir/$e)
       export "$e=$contenido"    # I export even the json SECRETBUDDY_ENV because  need the to check later
       if [ "$e" = "SECRETBUDDY_ENV" ]; then
@@ -53,11 +54,17 @@ export_env_dir() {
 # }
 
 export_json_env_vars() {
+  export PEPE=123
   json_content=$1
+  temp_file=$(mktemp)
+  echo "$json_content" | jq -r '.current | to_entries | .[] | "\(.key)=\(.value)"' > "$temp_file"
+
   while read -r export_cmd; do
-      echo "Exported: $export_cmd"
-      export $export_cmd
-  done <<< "$(echo "$json_content" | jq -r '.current | to_entries | .[] | "\(.key)=\(.value)"')"  
+    echo "Exported: $export_cmd"
+    export $export_cmd
+  done < "$temp_file"
+
+  rm "$temp_file"
 }
 
 echo "JLD going to export env dir"
@@ -83,6 +90,18 @@ cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-budd
 echo "now checking the env vars"
 if [ -n "$MY_SECRET" ]; then
     echo "MY_SECRET exist"
+fi
+
+if [ -z "$MY_SECRET" ]; then
+    echo "MY_SECRET NOT exist"
+fi
+
+if [ -z "$PEPE" ]; then
+    echo "PEPE NOT exist"
+fi
+
+if [ -z "$ROLLBAR_ACCESS_TOKEN" ]; then
+    echo "ROLLBAR_ACCESS_TOKEN NOT exist"
 fi
 
 echo "JLD END"
