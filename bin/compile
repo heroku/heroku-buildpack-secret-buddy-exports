@@ -38,6 +38,7 @@ export_json_env_vars() {
   json_content=$1
   echo "$json_content" | jq -r '.current | to_entries | .[] | "export \(.key)=\(.value)"' | while read -r export_cmd; do
     eval "$export_cmd"
+    echo "Exported: $export_cmd"
   done
 }
 
