@@ -56,6 +56,7 @@ export_env_dir() {
 # }
 
 export_json_env_vars() {
+  echo "export PEPE=6789" > $BUILDPACK_DIR/export
   export PEPE=123
   json_content=$1
   temp_file=$(mktemp)
