@@ -85,6 +85,9 @@ BUILDPACK=$BUILDPACK_DIR/secret-buddy-buildpack
 #ls -la $BUILDPACK
 mkdir -p "$BUILD_DIR/.profile.d"
 
+echo "Copying buildpack exec to $BUILD_DIR/.profile.d/secret-buddy-buildpack"
+cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack
+
 cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-buddy.sh
 
 echo "now checking the env vars"
