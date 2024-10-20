@@ -60,11 +60,11 @@ export_json_env_vars() {
   export PEPE=123
   json_content=$1
   temp_file=$(mktemp)
-  echo "$json_content" | jq -r '.current | to_entries | .[] | "\(.key)=\(.value)"' > "$temp_file"
+  echo "$json_content" | jq -r '.current | to_entries | .[] | "export \(.key)=\(.value)"' > "$temp_file"
 
   while read -r export_cmd; do
     echo "Exported: $export_cmd"
-    export $export_cmd
+    echo $export_cmd >> $BUILDPACK_DIR/export
   done < "$temp_file"
 
   rm "$temp_file"
