@@ -27,10 +27,10 @@ export_env_dir() {
       echo "exporting $e"
       contenido=$(cat $env_dir/$e)
       export "$e=$contenido"    # I export even the json SECRETBUDDY_ENV because  need the to check later
-      export PEPE=456
-      if [ "$e" = "SECRETBUDDY_ENV" ]; then
-        export_json_env_vars "$contenido"
-      fi
+      # export PEPE=456
+      # if [ "$e" = "SECRETBUDDY_ENV" ]; then
+      #   export_json_env_vars "$contenido"
+      # fi
       :
     done
   fi
