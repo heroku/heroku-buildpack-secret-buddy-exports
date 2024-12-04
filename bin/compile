@@ -71,12 +71,12 @@ export_json_env_vars() {
 }
 
 echo "JLD going to export env dir"
+echo "       WARNING: Secretbuddy does not support using secrets during build time."
 
 export_env_dir "$ENV_DIR"
 SECRETBUDDY="$SECRETBUDDY_ENV"
 if [ -z "$SECRETBUDDY" ]; then
-  echo "No secrets found"
-  exit 0
+  echo "       Warning: SECRETBUDDY_ENV not found. This may be due to a missing addon or consolidation rules."
 fi
 
 echo "JLD export completed"
@@ -88,7 +88,7 @@ BUILDPACK=$BUILDPACK_DIR/secret-buddy-buildpack
 #ls -la $BUILDPACK
 mkdir -p "$BUILD_DIR/.profile.d"
 
-echo "Copying buildpack exec to $BUILD_DIR/.profile.d/secret-buddy-buildpack"
+echo "       Copying buildpack exec to $BUILD_DIR/.profile.d/secret-buddy-buildpack"
 cp $BUILDPACK $BUILD_DIR/.profile.d/secret-buddy-buildpack
 
 cp $BUILDPACK_DIR/profile/secret-buddy.sh $BUILD_DIR/.profile.d/0000-secret-buddy.sh
